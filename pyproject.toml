@@ -1,5 +1,5 @@
 [project]
-name = "kyounoryouri-tools"
+name = "kyounoryouri_tools"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
@@ -26,6 +26,6 @@ line-length = 100
 docstring-code-format = true
 
 [tool.pyright]
-include = ["kyounoryouri_tools"]
+include = ["src/kyounoryouri_tools"]
 typeCheckingMode = "standard"
 reportInvalidStringEscapeSequence = "none"
