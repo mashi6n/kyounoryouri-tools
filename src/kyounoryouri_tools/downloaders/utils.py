@@ -17,7 +17,7 @@ def get_urlset(xml_source: Path) -> Urlset | None:
     """
     if not xml_source.exists():
         print(f"{xml_source} does not exist.")
-        return Urlset(url=[])
+        return None
 
     xmldict = xmltodict.parse(xml_source.read_text())
     urlset_dict = xmldict["urlset"]

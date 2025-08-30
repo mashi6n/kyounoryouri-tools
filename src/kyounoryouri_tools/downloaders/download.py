@@ -78,11 +78,12 @@ def dl_html(config: PathConfig) -> None:
     """
     urlset = get_urlset(config.sitemap_file_path())
     if urlset is None:
+        rich.print("[bold yellow]:warning: Failed to get URL set from sitemap.xml :warning:")
         return
 
     url_list = [url.loc for url in urlset.url]
 
-    downloaded = download(url_list[:10], config.web.html_dir)
+    downloaded = download(url_list, config.web.html_dir)
     rich.print(f"Downloaded {downloaded} HTML files to {config.web.html_dir}.\n")
 
 
@@ -101,12 +102,11 @@ def dl_image(config: PathConfig) -> None:
     for json_path in track(json_path_list, description="Collecting image URLs...", transient=True):
         d = Recipe.model_validate_json(json_path.read_text())
         img_url_list.append(d.image_url)
-    rich.print(f"Collected {len(img_url_list)} image URLs.")
     downloaded = download(img_url_list, config.web.img_dir)
     rich.print(f"Downloaded {downloaded} images to {config.web.img_dir}.\n")
 
 
-def dl_sitemap(sitemap_url: str, sitemap_dir: Path) -> None:
+def dl_sitemap(sitemap_url: str, sitemap_dir: Path, overwrite: bool = False) -> None:
     """
     Download recipe.xml
 
@@ -115,5 +115,8 @@ def dl_sitemap(sitemap_url: str, sitemap_dir: Path) -> None:
         sitemap_dir (Path): directory path to save recipe.xml
 
     """
-    download(sitemap_url, sitemap_dir)
-    rich.print(f"Downloaded sitemap.xml to {sitemap_dir}.\n")
+    downloaded = download(sitemap_url, sitemap_dir, overwrite=overwrite)
+    if downloaded == 1:
+        rich.print(f"Downloaded sitemap file to {sitemap_dir}.")
+    else:
+        rich.print(f"sitemap file already exists at {sitemap_dir}.")
