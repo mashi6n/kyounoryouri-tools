@@ -13,16 +13,19 @@ from .download import dl_sitemap
 from .utils import get_urlset
 
 
-def clean_outdated_files(config: PathConfig, sitemap_url: str, dry_run: bool = True) -> int:
-    """Download the latest sitemap and clean outdated files.
+def clean_outdated_files(config: PathConfig, sitemap_url: str, dry_run: bool = True) -> int:  # noqa: C901
+    """
+    Download the latest sitemap and clean outdated files.
 
     Args:
         config (PathConfig): Configuration object.
         sitemap_url (str): URL of the sitemap.
-        dry_run (bool): If True, perform a dry run without making changes and return the number of outdated files.
-    
+        dry_run (bool): If True, perform a dry run without making changes
+                        and return the number of outdated files.
+
     Returns:
         int: The number of outdated files.
+
     """
     old_sitemap = config.web.sitemap_dir / "recipe.xml"
     with TemporaryDirectory() as temp_dir:
@@ -79,8 +82,13 @@ def clean_outdated_files(config: PathConfig, sitemap_url: str, dry_run: bool = T
         if len(remove_candidates) == 0:
             return 0
 
-        if not dry_run and Confirm.ask("Are you sure you want to delete outdated files and replace sitemap with the latest version?"):
-            for file_path in track(remove_candidates, description="Removing outdated files...", transient=True):
+        if not dry_run and Confirm.ask(
+            "Are you sure you want to delete outdated files "
+            "and replace sitemap with the latest version?"
+        ):
+            for file_path in track(
+                remove_candidates, description="Removing outdated files...", transient=True
+            ):
                 file_path.unlink(missing_ok=True)
             rich.print(f"Removed {len(remove_candidates)} outdated files.")
             shutil.move(new_sitemap, config.sitemap_file_path())

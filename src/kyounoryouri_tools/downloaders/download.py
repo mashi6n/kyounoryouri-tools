@@ -72,8 +72,7 @@ def dl_html(config: PathConfig) -> None:
     Download html files which are listed in recipe.xml
 
     Args:
-        sitemap_dir (Path): directory path where recipe.xml is saved
-        html_dir (Path): directory path to save html files
+        config (PathConfig): Configuration object.
 
     """
     urlset = get_urlset(config.sitemap_file_path())
@@ -92,8 +91,7 @@ def dl_image(config: PathConfig) -> None:
     Download thumbnail images whose urls are in json files
 
     Args:
-        json_dir (Path): directory path where json files are saved
-        img_dir (Path): directory path to save images
+        config (PathConfig): Configuration object.
 
     """
     json_path_list = get_filepath_list(dir_path=config.web.extracted_json_dir, ext="json")
@@ -113,6 +111,7 @@ def dl_sitemap(sitemap_url: str, sitemap_dir: Path, overwrite: bool = False) -> 
     Args:
         sitemap_url (str): url of recipe.xml
         sitemap_dir (Path): directory path to save recipe.xml
+        overwrite (bool): If True, overwrite existing file.
 
     """
     downloaded = download(sitemap_url, sitemap_dir, overwrite=overwrite)

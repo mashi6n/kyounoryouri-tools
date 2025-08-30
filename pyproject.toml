@@ -24,6 +24,51 @@ dev = [
 [tool.ruff]
 line-length = 100
 
+[tool.ruff.lint]
+select = ["ALL"]
+ignore = [
+    "ANN1",
+    "COM812",
+    "D1",
+    "D203",
+    "D211",
+    "D212",
+    "D400",
+    "D415",
+    "EM102",
+    "ERA001",
+    "EXE",
+    "FBT001",
+    "FBT002",
+    "ISC001",
+    "ISC003",
+    "PD011",
+    "PERF203",
+    "PERF401",
+    "PLC0415",
+    "PLR0911",
+    "PLR0913",
+    "PLR2004",
+    "PLR5501",
+    "RET504",
+    "RUF001",
+    "RUF003",
+    "S107",
+    "S311",
+    "SLF001",
+    "SIM108",
+    "T201",
+    "T203",
+    "TC003",
+    "TD001",
+    "TD002",
+    "TD003",
+    "TRY003",
+]
+unfixable = [
+    "ERA001"
+]
+
 [tool.ruff.format]
 docstring-code-format = true
 

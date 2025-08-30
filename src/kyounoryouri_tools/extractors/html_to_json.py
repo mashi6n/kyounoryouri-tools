@@ -11,8 +11,7 @@ def html_to_json(config: PathConfig) -> None:
     Extract recipe data from html and save as json
 
     Args:
-        html_dir (Path): directory path where html files are saved
-        json_dir (Path): directory path to save json files
+        config (PathConfig): Configuration object.
 
     """
     html_path_list = get_filepath_list(dir_path=config.web.html_dir, ext="html")

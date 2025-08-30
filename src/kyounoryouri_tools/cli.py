@@ -14,6 +14,7 @@ app = Typer(
     no_args_is_help=True,
 )
 
+
 @app.command(name="init", help="initialize directory structure and download sitemap file")
 def init(
     config: Annotated[Path, Argument(help="path to output directory for htmls")] = Path(
@@ -22,7 +23,9 @@ def init(
     sitemap_url: Annotated[
         str, Option(help="sitemap url of NHK KyounoRyouri site")
     ] = "https://www.kyounoryouri.jp/sitemaps/recipe.xml",
-    overwrite: Annotated[bool, Option(help="overwrite existing sitemap file", is_flag=True, flag_value=True)] = False,
+    overwrite: Annotated[
+        bool, Option(help="overwrite existing sitemap file", is_flag=True, flag_value=True)
+    ] = False,
 ) -> None:
     pc = PathConfig.model_validate(yaml.load(config.read_text(), Loader=yaml.SafeLoader))
     pc.create_all_dirs()
@@ -56,12 +59,14 @@ def update(
     sitemap_url: Annotated[
         str, Option(help="sitemap url of NHK KyounoRyouri site")
     ] = "https://www.kyounoryouri.jp/sitemaps/recipe.xml",
-    overwrite: Annotated[bool, Option(help="update sitemap and delete outdated files", is_flag=True, flag_value=True)] = False,
+    overwrite: Annotated[
+        bool, Option(help="update sitemap and delete outdated files", is_flag=True, flag_value=True)
+    ] = False,
 ) -> None:
     pc = PathConfig.model_validate(yaml.load(config.read_text(), Loader=yaml.SafeLoader))
     pc.create_all_dirs()
     clean_outdated_files(pc, sitemap_url, dry_run=not overwrite)
 
 
-def main():
+def main() -> None:
     app()

@@ -1,4 +1,5 @@
 from pathlib import Path
+
 import xmltodict
 
 from kyounoryouri_tools.models import Urlset
