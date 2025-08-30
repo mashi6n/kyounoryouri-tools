@@ -24,8 +24,7 @@ def extract_recipe(html_path: Path) -> Recipe:
         Recipe: recipe
 
     """
-    with html_path.open() as f:
-        html = f.read()
+    html = html_path.read_text()
     soup = BeautifulSoup(html, "html.parser")
 
     ingredients, servings, pre_steps = extract_sub(soup)
