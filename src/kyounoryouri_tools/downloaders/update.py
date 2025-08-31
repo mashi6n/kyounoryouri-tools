@@ -13,7 +13,35 @@ from .download import dl_sitemap
 from .utils import get_urlset
 
 
-def clean_outdated_files(config: PathConfig, sitemap_url: str, dry_run: bool = True) -> int:  # noqa: C901
+def get_related_files(config: PathConfig, html_path: Path) -> list[Path]:
+    related_files: list[Path] = []
+
+    if not html_path.exists():
+        return related_files
+    related_files.append(html_path)
+
+    raw_recipe_json_path = config.raw_recipe_json_file_path(html_path)
+    if not raw_recipe_json_path.exists():
+        return related_files
+    related_files.append(raw_recipe_json_path)
+
+    recipe_json_path = config.recipe_json_file_path(html_path)
+    if not recipe_json_path.exists():
+        pass
+    else:
+        related_files.append(recipe_json_path)
+
+    recipe = RawRecipe.model_validate_json(raw_recipe_json_path.read_text())
+    img_path = config.img_file_path(recipe.image_url)
+
+    if not img_path.exists():
+        return related_files
+    related_files.append(img_path)
+
+    return related_files
+
+
+def clean_outdated_files(config: PathConfig, sitemap_url: str, dry_run: bool = True) -> int:
     """
     Download the latest sitemap and clean outdated files.
 
@@ -27,7 +55,7 @@ def clean_outdated_files(config: PathConfig, sitemap_url: str, dry_run: bool = T
         int: The number of outdated files.
 
     """
-    old_sitemap = config.web.sitemap_dir / "recipe.xml"
+    old_sitemap = config.sitemap_dir / "recipe.xml"
     with TemporaryDirectory() as temp_dir:
         dl_sitemap(sitemap_url, Path(temp_dir))
         new_sitemap = Path(temp_dir) / "recipe.xml"
@@ -49,9 +77,7 @@ def clean_outdated_files(config: PathConfig, sitemap_url: str, dry_run: bool = T
         old_loc2lastmod = {url.loc: url.lastmod for url in old_urlset.url}
         new_loc2lastmod = {url.loc: url.lastmod for url in new_urlset.url}
 
-        remove_html_candidates: list[Path] = []
-        remove_json_candidates: list[Path] = []
-        remove_img_candidates: list[Path] = []
+        remove_candidates: list[Path] = []
 
         for loc, lastmod in old_loc2lastmod.items():
             if loc not in new_loc2lastmod:
@@ -60,23 +86,7 @@ def clean_outdated_files(config: PathConfig, sitemap_url: str, dry_run: bool = T
                 continue
 
             html_path = config.html_file_path(loc)
-            if not html_path.exists():
-                continue
-            remove_html_candidates.append(html_path)
-
-            json_path = config.json_file_path(html_path)
-            if not json_path.exists():
-                continue
-            remove_json_candidates.append(json_path)
-
-            recipe = RawRecipe.model_validate_json(json_path.read_text())
-            img_path = config.img_file_path(recipe.image_url)
-
-            if not img_path.exists():
-                continue
-            remove_img_candidates.append(img_path)
-
-        remove_candidates = remove_html_candidates + remove_json_candidates + remove_img_candidates
+            remove_candidates.extend(get_related_files(config, html_path))
 
         rich.print(f"Detected {len(remove_candidates)} outdated files.")
         if len(remove_candidates) == 0:

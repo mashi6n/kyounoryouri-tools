@@ -82,8 +82,8 @@ def dl_html(config: PathConfig) -> None:
 
     url_list = [url.loc for url in urlset.url]
 
-    downloaded = download(url_list, config.web.html_dir)
-    rich.print(f"Downloaded {downloaded} HTML files to {config.web.html_dir}.\n")
+    downloaded = download(url_list, config.html_dir)
+    rich.print(f"Downloaded {downloaded} HTML files to {config.html_dir}.\n")
 
 
 def dl_image(config: PathConfig) -> None:
@@ -94,14 +94,14 @@ def dl_image(config: PathConfig) -> None:
         config (PathConfig): Configuration object.
 
     """
-    json_path_list = get_filepath_list(dir_path=config.web.extracted_json_dir, ext="json")
+    json_path_list = get_filepath_list(dir_path=config.raw_recipe_json_dir, ext="json")
     img_url_list = []
 
     for json_path in track(json_path_list, description="Collecting image URLs...", transient=True):
         d = RawRecipe.model_validate_json(json_path.read_text())
         img_url_list.append(d.image_url)
-    downloaded = download(img_url_list, config.web.img_dir)
-    rich.print(f"Downloaded {downloaded} images to {config.web.img_dir}.\n")
+    downloaded = download(img_url_list, config.img_dir)
+    rich.print(f"Downloaded {downloaded} images to {config.img_dir}.\n")
 
 
 def dl_sitemap(sitemap_url: str, sitemap_dir: Path, overwrite: bool = False) -> None:

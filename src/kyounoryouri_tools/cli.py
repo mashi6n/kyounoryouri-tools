@@ -31,7 +31,7 @@ def init(
     pc.print()
     pc.create_all_dirs()
     rich.print("Initialized directory structure.")
-    dl_sitemap(sitemap_url, pc.web.sitemap_dir, overwrite=overwrite)
+    dl_sitemap(sitemap_url, pc.sitemap_dir, overwrite=overwrite)
 
 
 @app.command(name="download", help="download recipe data from the website")
