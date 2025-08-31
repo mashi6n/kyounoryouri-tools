@@ -10,10 +10,10 @@ from kyounoryouri_tools.extractors.core import (
     extract_title,
     extract_urls,
 )
-from kyounoryouri_tools.models import Recipe
+from kyounoryouri_tools.models import RawRecipe
 
 
-def extract_recipe(html_path: Path) -> Recipe:
+def extract_recipe(html_path: Path) -> RawRecipe:
     """
     Extract recipe from the page
 
@@ -39,7 +39,7 @@ def extract_recipe(html_path: Path) -> Recipe:
 
     recipe_number, recipe_name = html_path.stem.split("_")
 
-    return Recipe(
+    return RawRecipe(
         id=f"{int(recipe_number):08d}_{recipe_name}",
         title=title,
         instruction=steps,

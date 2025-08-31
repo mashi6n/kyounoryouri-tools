@@ -106,9 +106,9 @@ class TitledStep(BaseModel):
         return step_list
 
 
-class Recipe(BaseModel):
+class RawRecipe(BaseModel):
     """
-    Recipe corresponds to a recipe.
+    RawRecipe corresponds to a recipe data extracted from the website.
 
     Fields:
         id (str): id of the recipe.

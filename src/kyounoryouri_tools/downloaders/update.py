@@ -7,7 +7,7 @@ from rich.progress import track
 from rich.prompt import Confirm
 
 from kyounoryouri_tools.config import PathConfig
-from kyounoryouri_tools.models import Recipe
+from kyounoryouri_tools.models import RawRecipe
 
 from .download import dl_sitemap
 from .utils import get_urlset
@@ -69,7 +69,7 @@ def clean_outdated_files(config: PathConfig, sitemap_url: str, dry_run: bool = T
                 continue
             remove_json_candidates.append(json_path)
 
-            recipe = Recipe.model_validate_json(json_path.read_text())
+            recipe = RawRecipe.model_validate_json(json_path.read_text())
             img_path = config.img_file_path(recipe.image_url)
 
             if not img_path.exists():
