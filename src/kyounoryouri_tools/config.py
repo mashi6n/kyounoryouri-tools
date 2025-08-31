@@ -1,7 +1,9 @@
 from pathlib import Path
 from urllib.parse import unquote
 
+import rich
 from pydantic import BaseModel
+from rich.panel import Panel
 
 
 class WebPathConfig(BaseModel):
@@ -26,6 +28,15 @@ class PathConfig(BaseModel):
         self.web.extracted_json_dir.mkdir(parents=True, exist_ok=True)
         self.dataset.jsonl_dir.mkdir(parents=True, exist_ok=True)
 
+    def exist_all(self) -> bool:
+        return (
+            self.web.html_dir.exists()
+            and self.web.img_dir.exists()
+            and self.web.sitemap_dir.exists()
+            and self.web.extracted_json_dir.exists()
+            and self.dataset.jsonl_dir.exists()
+        )
+
     def sitemap_file_path(self) -> Path:
         return self.web.sitemap_dir / "recipe.xml"
 
@@ -37,3 +48,16 @@ class PathConfig(BaseModel):
 
     def img_file_path(self, image_url: str) -> Path:
         return self.web.img_dir / unquote(image_url.split("/")[-1])
+
+    def print(self) -> None:
+        rich.print(
+            Panel.fit(
+                f"""\
+HTML Directory: [yellow]{self.web.html_dir}[/]
+Image Directory: [yellow]{self.web.img_dir}[/]
+Sitemap Directory: [yellow]{self.web.sitemap_dir}[/]
+Extracted JSON Directory: [yellow]{self.web.extracted_json_dir}[/]
+JSONL Directory: [yellow]{self.dataset.jsonl_dir}[/]""",
+                title="Path Configuration",
+            ),
+        )

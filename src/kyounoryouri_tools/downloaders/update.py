@@ -83,8 +83,8 @@ def clean_outdated_files(config: PathConfig, sitemap_url: str, dry_run: bool = T
             return 0
 
         if not dry_run and Confirm.ask(
-            "Are you sure you want to delete outdated files "
-            "and replace sitemap with the latest version?"
+            "[bold]Are you sure you want to [red]delete[/red] outdated files "
+            "and [red]replace[/red] sitemap with the latest version?[/]"
         ):
             for file_path in track(
                 remove_candidates, description="Removing outdated files...", transient=True

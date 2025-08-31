@@ -28,6 +28,7 @@ def init(
     ] = False,
 ) -> None:
     pc = PathConfig.model_validate(yaml.load(config.read_text(), Loader=yaml.SafeLoader))
+    pc.print()
     pc.create_all_dirs()
     rich.print("Initialized directory structure.")
     dl_sitemap(sitemap_url, pc.web.sitemap_dir, overwrite=overwrite)
@@ -40,8 +41,13 @@ def download(
     ),
 ) -> None:
     pc = PathConfig.model_validate(yaml.load(config.read_text(), Loader=yaml.SafeLoader))
+    pc.print()
     if not pc.sitemap_file_path().exists():
         rich.print("[yellow]sitemap.xml not found! Please run `init` command first.")
+        return
+
+    if not pc.exist_all():
+        rich.print("[yellow]Some directories do not exist! Please run `init` command first.")
         return
 
     dl_html(pc)
@@ -64,7 +70,11 @@ def update(
     ] = False,
 ) -> None:
     pc = PathConfig.model_validate(yaml.load(config.read_text(), Loader=yaml.SafeLoader))
-    pc.create_all_dirs()
+    pc.print()
+    if not pc.exist_all():
+        rich.print("[yellow]Some directories do not exist! Please run `init` command first.")
+        return
+
     clean_outdated_files(pc, sitemap_url, dry_run=not overwrite)
 
 
