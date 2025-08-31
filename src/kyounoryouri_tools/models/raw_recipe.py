@@ -5,6 +5,8 @@ from uuid import uuid4
 
 from pydantic import BaseModel, Field
 
+from .recipe import Recipe
+
 
 class Ingredient(BaseModel):
     """
@@ -148,3 +150,23 @@ class RawRecipe(BaseModel):
                 if s in step.desc:
                     return True
         return False
+
+    def to_recipe(self) -> Recipe:
+        title = self.title
+        ingredients = self.ingredients
+        ingredient_list_str = []
+        for ingr in ingredients:
+            ingredient_list_str.extend(ingr.get_list_str(prefix=""))
+        instruction = self.instruction
+        instruction_list_str = []
+        for instr in instruction:
+            instruction_list_str.extend(
+                instr.get_list_str_wo_title(remove_stepref_marker=True, assign_step_number=True)
+            )
+
+        return Recipe(
+            id=self.id,
+            title=title,
+            ingredients=ingredient_list_str,
+            instructions=instruction_list_str,
+        )
