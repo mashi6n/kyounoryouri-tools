@@ -1,8 +1,5 @@
-web:
-  html_dir: "data/html"
-  img_dir: "data/img"
-  extracted_json_dir: "data/json"
-  sitemap_dir: "data/sitemap"
-
-dataset:
-  jsonl_dir: "data/jsonl"
+html_dir: "data/html"
+img_dir: "data/img"
+raw_recipe_json_dir: "data/raw_recipe_json"
+recipe_json_dir: "data/recipe_json"
+sitemap_dir: "data/sitemap"
