@@ -116,6 +116,6 @@ def dl_sitemap(sitemap_url: str, sitemap_dir: Path, overwrite: bool = False) -> 
     """
     downloaded = download(sitemap_url, sitemap_dir, overwrite=overwrite)
     if downloaded == 1:
-        rich.print(f"Downloaded sitemap file to {sitemap_dir}.")
+        rich.print(f"Downloaded sitemap file to {sitemap_dir}.\n")
     else:
-        rich.print(f"sitemap file already exists at {sitemap_dir}.")
+        rich.print(f"sitemap file already exists at {sitemap_dir}.\n")

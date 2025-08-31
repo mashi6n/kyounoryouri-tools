@@ -56,3 +56,4 @@ Recipe JSON Directory: [yellow]{self.recipe_json_dir}[/]""",
                 title="Path Configuration",
             ),
         )
+        rich.print()

@@ -54,7 +54,7 @@ def download(
     html_to_json(pc)
     dl_image(pc)
 
-    rich.print("[bold green]:party_popper: Everything up-to-date! :party_popper:")
+    rich.print("[green]:heavy_check_mark: Everything is downloaded!")
 
 
 @app.command(name="update", help="update sitemap and remove outdated files")

@@ -32,4 +32,4 @@ def html_to_json(config: PathConfig) -> None:
         recipe_json_path = config.recipe_json_file_path(html_path)
         recipe_json_path.write_text(recipe.model_dump_json(indent=4))
 
-    rich.print(f"Extracted {len(extract_html_list)} recipes.")
+    rich.print(f"Extracted {len(extract_html_list)} recipes.\n")
