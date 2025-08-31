@@ -1,11 +1,109 @@
+from __future__ import annotations
+
 import datetime
 from uuid import uuid4
 
 from pydantic import BaseModel, Field
 
-from .ingredient import Ingredient
-from .nutrient import Nutrient
-from .titled_step import TitledStep
+
+class Ingredient(BaseModel):
+    """
+    Ingredient corresponds to an ingredient in a recipe.
+
+    Fileds:
+        name (str): name of the ingredient.
+        quantity (str): quantity of the ingredient.
+        note (str): note for the ingredient.
+        sub_ingr (list[Ingredient]): sub ingredients which consist of the ingredient.
+    """
+
+    name: str
+    quantity: str
+    note: str
+    sub_ingr: list[Ingredient]
+
+    def get_list_str(self, prefix: str) -> list[str]:
+        ingredient_list = []
+        name = f"{prefix.strip()} {self.name}" if prefix != "" else self.name
+        qty = f", 分量: {self.quantity}" if self.quantity != "" else ""
+        note = f", 備考: {self.note}" if self.note != "" else ""
+        if self.name.find("【") == -1:
+            ingredient_list.append(name + qty + note)
+
+        for sub_ingr in self.sub_ingr:
+            ingredient_list.extend(sub_ingr.get_list_str(prefix=name))
+        return ingredient_list
+
+
+class Nutrient(BaseModel):
+    """
+    Nutrient corresponds to a nutrient in a recipe.
+
+    Fields:
+        name (str): name of the nutrient.
+        quantity (str): quantity of the nutrient.
+        servings (str): information of servings.
+    """
+
+    name: str
+    quantity: str
+    servings: str
+
+
+class Step(BaseModel):
+    """
+    Step correspods to a single step in a recipe instruction or preparation.
+
+    Fields:
+        step_num (int): step number.
+        desc (str): description of the step.
+        point (str): tip, hint, or note for the step.
+    """
+
+    step_num: int
+    desc: str
+    point: str
+
+    def __str__(self) -> str:
+        if self.point == "":
+            return f"{self.step_num}: {self.desc}"
+        return f"{self.step_num}: {self.desc}  [[!{self.point}]]"
+
+
+class TitledStep(BaseModel):
+    """
+    TitledStep corresponds to a section of a recipe instruction or preparation.
+
+    Fields:
+        title (str): title of the section. section may not have a title.
+        steps (list[Step]): steps in the section.
+    """
+
+    title: str
+    steps: list[Step]
+
+    def __str__(self) -> str:
+        s = self.title + "\n"
+        for step in self.steps:
+            s += f"  {step}\n"
+        return s
+
+    def get_list_str_wo_title(
+        self, remove_stepref_marker: bool, assign_step_number: bool
+    ) -> list[str]:
+        step_list = []
+        for step in self.steps:
+            if assign_step_number:
+                if remove_stepref_marker:
+                    step_list.append(f"{step.step_num}. {step.desc.replace('__', '')}".strip())
+                else:
+                    step_list.append(f"{step.step_num}. {step.desc}".strip())
+            else:
+                if remove_stepref_marker:
+                    step_list.append(step.desc.replace("__", "").strip())
+                else:
+                    step_list.append(step.desc.strip())
+        return step_list
 
 
 class Recipe(BaseModel):
