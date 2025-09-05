@@ -6,12 +6,15 @@ from kyounoryouri_tools.extractors.extract_recipe import extract_recipe
 from kyounoryouri_tools.utils import get_filepath_list
 
 
-def html_to_json(config: PathConfig) -> None:
+def html_to_json(config: PathConfig) -> tuple[int, int]:
     """
     Extract recipe data from html and save as json
 
     Args:
         config (PathConfig): Configuration object.
+
+    Returns:
+        tuple[int, int]: The number of extracted raw and ordinary recipe JSON files
 
     """
     html_path_list = get_filepath_list(dir_path=config.html_dir, ext="html")
@@ -32,4 +35,10 @@ def html_to_json(config: PathConfig) -> None:
         recipe_json_path = config.recipe_json_file_path(html_path)
         recipe_json_path.write_text(recipe.model_dump_json(indent=4))
 
-    rich.print(f"Extracted {len(extract_html_list)} recipes.\n")
+    rich.print(
+        f"{len(extract_html_list)} recipes have been extracted to "
+        + f"[cyan]{config.raw_recipe_json_dir}[/]."
+        + " and converted to ordinary recipe JSON files in "
+        + f"[cyan]{config.recipe_json_dir}[/].\n"
+    )
+    return len(extract_html_list), len(extract_html_list)

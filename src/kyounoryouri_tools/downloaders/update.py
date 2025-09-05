@@ -52,7 +52,7 @@ def clean_outdated_files(config: PathConfig, sitemap_url: str, dry_run: bool = T
                         and return the number of outdated files.
 
     Returns:
-        int: The number of outdated files.
+        int: The number of outdated files. -1 if failed to get the latest sitemap.
 
     """
     old_sitemap = config.sitemap_dir / "recipe.xml"
@@ -64,17 +64,18 @@ def clean_outdated_files(config: PathConfig, sitemap_url: str, dry_run: bool = T
         new_urlset = get_urlset(new_sitemap)
 
         if old_urlset is None:
-            rich.print(f"sitemap not found in [magenta]{old_sitemap}")
-            rich.print("Skip cleaning outdated files.")
-            return 0
+            rich.print(
+                f"Sitemap not exists at [cyan]{old_sitemap}[/]." + "Skip cleaning outdated files.\n"
+            )
+            return -1
 
         if new_urlset is None:
             rich.print(
-                f"[yellow] Failed to get the latest recipe.xml from the URL: [magenta]{sitemap_url}"
+                f"[yellow] Failed to get the latest recipe.xml from the URL: [cyan]{sitemap_url}[/]"
             )
-            return 0
+            return -1
 
-        old_loc2lastmod = {url.loc: url.lastmod for url in old_urlset.url}
+        old_loc2lastmod = {url.loc: url.lastmod for url in old_urlset.url[:2]}
         new_loc2lastmod = {url.loc: url.lastmod for url in new_urlset.url}
 
         remove_candidates: list[Path] = []
@@ -88,7 +89,7 @@ def clean_outdated_files(config: PathConfig, sitemap_url: str, dry_run: bool = T
             html_path = config.html_file_path(loc)
             remove_candidates.extend(get_related_files(config, html_path))
 
-        rich.print(f"Detected {len(remove_candidates)} outdated files.")
+        rich.print(f"{len(remove_candidates)} files are outdated.\n")
         if len(remove_candidates) == 0:
             return 0
 
@@ -100,8 +101,8 @@ def clean_outdated_files(config: PathConfig, sitemap_url: str, dry_run: bool = T
                 remove_candidates, description="Removing outdated files...", transient=True
             ):
                 file_path.unlink(missing_ok=True)
-            rich.print(f"Removed {len(remove_candidates)} outdated files.")
+            rich.print(f"{len(remove_candidates)} outdated files have been removed.")
             shutil.move(new_sitemap, config.sitemap_file_path())
-            rich.print("Updated sitemap to the latest version.")
+            rich.print("Sitemap has been updated to the latest version.")
 
         return len(remove_candidates)

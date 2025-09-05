@@ -1,17 +1,34 @@
+from dataclasses import dataclass
 from pathlib import Path
 from urllib.parse import unquote
 
 import rich
-from pydantic import BaseModel
 from rich.panel import Panel
 
 
-class PathConfig(BaseModel):
-    html_dir: Path
-    img_dir: Path
-    sitemap_dir: Path
-    raw_recipe_json_dir: Path
-    recipe_json_dir: Path
+@dataclass(frozen=True)
+class PathConfig:
+    root_dir: Path
+
+    @property
+    def html_dir(self) -> Path:
+        return self.root_dir / "html"
+
+    @property
+    def img_dir(self) -> Path:
+        return self.root_dir / "img"
+
+    @property
+    def sitemap_dir(self) -> Path:
+        return self.root_dir / "sitemap"
+
+    @property
+    def raw_recipe_json_dir(self) -> Path:
+        return self.root_dir / "raw_recipe_json"
+
+    @property
+    def recipe_json_dir(self) -> Path:
+        return self.root_dir / "recipe_json"
 
     def create_all_dirs(self) -> None:
         self.html_dir.mkdir(parents=True, exist_ok=True)
@@ -19,6 +36,7 @@ class PathConfig(BaseModel):
         self.sitemap_dir.mkdir(parents=True, exist_ok=True)
         self.raw_recipe_json_dir.mkdir(parents=True, exist_ok=True)
         self.recipe_json_dir.mkdir(parents=True, exist_ok=True)
+        rich.print("All directories have been created.\n")
 
     def exist_all(self) -> bool:
         return (
@@ -48,11 +66,11 @@ class PathConfig(BaseModel):
         rich.print(
             Panel.fit(
                 f"""\
-HTML Directory: [yellow]{self.html_dir}[/]
-Image Directory: [yellow]{self.img_dir}[/]
-Sitemap Directory: [yellow]{self.sitemap_dir}[/]
-Raw Recipe JSON Directory: [yellow]{self.raw_recipe_json_dir}[/]
-Recipe JSON Directory: [yellow]{self.recipe_json_dir}[/]""",
+           HTML Directory: [cyan]{self.html_dir}[/]
+          Image Directory: [cyan]{self.img_dir}[/]
+        Sitemap Directory: [cyan]{self.sitemap_dir}[/]
+Raw Recipe JSON Directory: [cyan]{self.raw_recipe_json_dir}[/]
+    Recipe JSON Directory: [cyan]{self.recipe_json_dir}[/]""",
                 title="Path Configuration",
             ),
         )

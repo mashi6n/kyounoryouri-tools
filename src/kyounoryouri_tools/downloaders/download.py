@@ -67,31 +67,38 @@ def download(url: str | list[str], dir_path: Path, overwrite: bool = False) -> i
     return len(download_url_list)
 
 
-def dl_html(config: PathConfig) -> None:
+def dl_html(config: PathConfig) -> int:
     """
     Download html files which are listed in recipe.xml
 
     Args:
         config (PathConfig): Configuration object.
 
+    Returns:
+        int: The number of downloaded html files.
+
     """
     urlset = get_urlset(config.sitemap_file_path())
     if urlset is None:
-        rich.print("[bold yellow]:warning: Failed to get URL set from sitemap.xml :warning:")
-        return
+        rich.print("[bold yellow]:warning: Failed to get urlset from sitemap.xml :warning:")
+        return 0
 
-    url_list = [url.loc for url in urlset.url]
+    url_list = [url.loc for url in urlset.url][:10]
 
     downloaded = download(url_list, config.html_dir)
-    rich.print(f"Downloaded {downloaded} HTML files to {config.html_dir}.\n")
+    rich.print(f"{downloaded} HTML files have been downloaded to [cyan]{config.html_dir}[/].\n")
+    return downloaded
 
 
-def dl_image(config: PathConfig) -> None:
+def dl_image(config: PathConfig) -> int:
     """
     Download thumbnail images whose urls are in json files
 
     Args:
         config (PathConfig): Configuration object.
+
+    Returns:
+        int: The number of downloaded images.
 
     """
     json_path_list = get_filepath_list(dir_path=config.raw_recipe_json_dir, ext="json")
@@ -101,10 +108,11 @@ def dl_image(config: PathConfig) -> None:
         d = RawRecipe.model_validate_json(json_path.read_text())
         img_url_list.append(d.image_url)
     downloaded = download(img_url_list, config.img_dir)
-    rich.print(f"Downloaded {downloaded} images to {config.img_dir}.\n")
+    rich.print(f"{downloaded} images have been downloaded to [cyan]{config.img_dir}[/].\n")
+    return downloaded
 
 
-def dl_sitemap(sitemap_url: str, sitemap_dir: Path, overwrite: bool = False) -> None:
+def dl_sitemap(sitemap_url: str, sitemap_dir: Path, overwrite: bool = False) -> int:
     """
     Download recipe.xml
 
@@ -113,9 +121,14 @@ def dl_sitemap(sitemap_url: str, sitemap_dir: Path, overwrite: bool = False) -> 
         sitemap_dir (Path): directory path to save recipe.xml
         overwrite (bool): If True, overwrite existing file.
 
+    Returns:
+        int: 1 if downloaded, 0 if skipped.
+
     """
     downloaded = download(sitemap_url, sitemap_dir, overwrite=overwrite)
     if downloaded == 1:
-        rich.print(f"Downloaded sitemap file to {sitemap_dir}.\n")
+        rich.print(f"Sitemap file has been downloaded to [cyan]{sitemap_dir}[/].\n")
     else:
-        rich.print(f"sitemap file already exists at {sitemap_dir}.\n")
+        rich.print(f"Sitemap file already exists at [cyan]{sitemap_dir}[/]. Skip downloading.\n")
+
+    return downloaded
