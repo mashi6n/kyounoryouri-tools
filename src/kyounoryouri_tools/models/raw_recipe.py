@@ -1,9 +1,8 @@
 from __future__ import annotations
 
 import datetime
-from uuid import uuid4
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel
 
 from .recipe import Recipe
 
@@ -125,7 +124,7 @@ class RawRecipe(BaseModel):
         image_url (str): url of the image of the recipe.
     """
 
-    id: str = Field(default_factory=lambda: uuid4().hex)
+    id: str
     title: str
     instruction: list[TitledStep]
     preparation: list[TitledStep]

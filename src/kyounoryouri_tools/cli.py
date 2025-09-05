@@ -3,7 +3,7 @@ from typing import Annotated
 
 import rich
 from rich.tree import Tree
-from typer import Argument, Option, Typer
+from typer import Option, Typer
 
 from kyounoryouri_tools.config import PathConfig
 from kyounoryouri_tools.downloaders import clean_outdated_files, dl_html, dl_image, dl_sitemap
@@ -17,7 +17,7 @@ app = Typer(
 
 @app.command(name="init", help="initialize directory structure and download sitemap file")
 def init(
-    data_root: Annotated[Path, Argument(help="path to root data directory")] = Path("./data"),
+    data_root: Annotated[Path, Option(help="path to root data directory")] = Path("./data"),
     sitemap_url: Annotated[
         str, Option(help="sitemap url of NHK KyounoRyouri site")
     ] = "https://www.kyounoryouri.jp/sitemaps/recipe.xml",
@@ -37,7 +37,7 @@ def init(
 
 @app.command(name="download", help="download recipe data from the website")
 def download(
-    data_root: Annotated[Path, Argument(help="path to root data directory")] = Path("./data"),
+    data_root: Annotated[Path, Option(help="path to root data directory")] = Path("./data"),
 ) -> None:
     pc = PathConfig(root_dir=data_root)
     pc.print()
@@ -63,7 +63,7 @@ def download(
 
 @app.command(name="update", help="update sitemap and remove outdated files")
 def update(
-    data_root: Annotated[Path, Argument(help="path to root data directory")] = Path("./data"),
+    data_root: Annotated[Path, Option(help="path to root data directory")] = Path("./data"),
     sitemap_url: Annotated[
         str, Option(help="sitemap url of NHK KyounoRyouri site")
     ] = "https://www.kyounoryouri.jp/sitemaps/recipe.xml",
