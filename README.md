@@ -149,3 +149,24 @@ p = Path("data/recipe_json/XXX.json")
 recipe = Recipe.model_validate_json(p.read_text())
 print(recipe.title)
 ```
+
+## Contributing
+
+Contributions are welcome!
+Please open issues or pull requests on GitHub.
+
+## Citation
+If you find KyounoRyouri Tools useful in your research, we would appreciate it if you could cite the following paper:
+
+(To be updated upon publication)
+```bibtex
+@misc{toyooka2025highlycleanrecipedataset,
+      title={A Highly Clean Recipe Dataset with Ingredient States Annotation for State Probing Task}, 
+      author={Mashiro Toyooka and Kiyoharu Aizawa and Yoko Yamakata},
+      year={2025},
+      eprint={2507.17232},
+      archivePrefix={arXiv},
+      primaryClass={cs.MM},
+      url={https://arxiv.org/abs/2507.17232}, 
+}
+```
