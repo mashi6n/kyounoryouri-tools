@@ -1,7 +1,80 @@
 [project]
-name = "kyounoryouri-tools"
+name = "kyounoryouri_tools"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.10"
-dependencies = []
+dependencies = [
+    "beautifulsoup4>=4.13.5",
+    "natsort>=8.4.0",
+    "pydantic>=2.11.7",
+    "requests>=2.32.5",
+    "rich>=14.1.0",
+    "typer>=0.16.1",
+    "types-beautifulsoup4>=4.12.0.20250516",
+    "xmltodict>=0.14.2",
+]
+
+[dependency-groups]
+dev = [
+    "pyright>=1.1.404",
+]
+
+[tool.ruff]
+line-length = 100
+
+[tool.ruff.lint]
+select = ["ALL"]
+ignore = [
+    "ANN1",
+    "COM812",
+    "D1",
+    "D203",
+    "D211",
+    "D212",
+    "D400",
+    "D415",
+    "EM102",
+    "ERA001",
+    "EXE",
+    "FBT001",
+    "FBT002",
+    "ISC001",
+    "ISC003",
+    "PD011",
+    "PERF203",
+    "PERF401",
+    "PLC0415",
+    "PLR0911",
+    "PLR0913",
+    "PLR2004",
+    "PLR5501",
+    "RET504",
+    "RUF001",
+    "RUF003",
+    "S107",
+    "S311",
+    "SLF001",
+    "SIM108",
+    "T201",
+    "T203",
+    "TC003",
+    "TD001",
+    "TD002",
+    "TD003",
+    "TRY003",
+]
+unfixable = [
+    "ERA001"
+]
+
+[tool.ruff.format]
+docstring-code-format = true
+
+[tool.pyright]
+include = ["src/kyounoryouri_tools"]
+typeCheckingMode = "standard"
+reportInvalidStringEscapeSequence = "none"
+
+[project.scripts]
+kyounoryouri-tools = "kyounoryouri_tools.cli:main"
