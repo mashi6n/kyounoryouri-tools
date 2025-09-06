@@ -2,6 +2,8 @@
 
 KyounoRyouri Tools provides utilities to download and extract recipe data from [Minna no Kyō no Ryōri](https://www.kyounoryouri.jp/), a cooking recipe website operated by Japan Broadcasting Corporation (NHK).
 
+[🇯🇵 Japanese](./README_ja.md)
+
 ## 🚨 Disclaimer
 
 - ***This project is unofficial and not affiliated with NHK.***
