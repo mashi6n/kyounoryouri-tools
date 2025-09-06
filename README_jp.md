@@ -85,4 +85,27 @@ DATASET_ROOT/
 
 ## データ構造
 ### Raw Recipe
-HTMLファイルから抽出された構造化データを保ったJSONファイルのデータ構造は以下の通りです。
+HTMLファイルから抽出された構造化データを保ったJSONファイルのデータ構造は[`raw_recipe.py`](./src/kyounoryouri_tools/models/raw_recipe.py)に定義されています。
+
+`DATASET_ROOT/raw_recipe_json`にあるレシピデータはこのデータモデルを用いて次のようにパースすることができます。
+```python
+from kyounoryouri_tools.models import RawRecipe
+from pathlib import Path
+
+p = Path("data/raw_recipe_json/XXX.json")
+raw_recipe = RawRecipe.model_validate_json(p.read_text())
+print(raw_recipe.title)
+```
+
+### Recipe
+一般的なレシピデータを持つJSONファイルのデータ構造は、[`recipe.py`](./src/kyounoryouri_tools/models/recipe.py)に定義されています。
+
+`DATASET_ROOT/recipe_json`にあるレシピデータはこのデータモデルを用いて次のようにパースすることができます。
+```python
+from kyounoryouri_tools.models import Recipe
+from pathlib import Path
+
+p = Path("data/recipe_json/XXX.json")
+recipe = Recipe.model_validate_json(p.read_text())
+print(recipe.title)
+```
