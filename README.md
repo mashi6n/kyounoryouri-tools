@@ -1,8 +1,13 @@
 # KyounoRyouri Tools
 
-KyounoRyouri Tools provides utilities to download and extract recipe data from [Minna no Kyō no Ryōri](https://www.kyounoryouri.jp/), a cooking recipe website operated by Japan Broadcasting Corporation (NHK).
+[![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](./LICENSE)
+![Python](https://img.shields.io/badge/python-3.10%2B-blue)
+[![ci](https://github.com/mashi6n/kyounoryouri-tools/actions/workflows/ci.yaml/badge.svg)](https://github.com/mashi6n/kyounoryouri-tools/actions/workflows/ci.yaml)
 
 [🇯🇵 Japanese](./README_ja.md)
+
+KyounoRyouri Tools provides utilities to download and extract recipe data from [Minna no Kyō no Ryōri](https://www.kyounoryouri.jp/), a cooking recipe website operated by Japan Broadcasting Corporation (NHK).
+
 
 ## 🚨 Disclaimer
 

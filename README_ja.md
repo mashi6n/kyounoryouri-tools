@@ -1,7 +1,12 @@
 # KyounoRyouri Tools
-このリポジトリは、日本放送協会(NHK)のウェブサイト[みんなのきょうの料理](https://www.kyounoryouri.jp/)に掲載されているレシピをダウンロードし、レシピデータを抽出するためのツールを提供します。
+
+[![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](./LICENSE)
+![Python](https://img.shields.io/badge/python-3.10%2B-blue)
+[![ci](https://github.com/mashi6n/kyounoryouri-tools/actions/workflows/ci.yaml/badge.svg)](https://github.com/mashi6n/kyounoryouri-tools/actions/workflows/ci.yaml)
 
 [🌍 English](./README.md)
+
+このリポジトリは、日本放送協会(NHK)のウェブサイト[みんなのきょうの料理](https://www.kyounoryouri.jp/)に掲載されているレシピをダウンロードし、レシピデータを抽出するためのツールを提供します。
 
 ## 🚨 注意事項 🚨
 - ***このリポジトリは非公式であり、NHKとは一切関係がありません。***
