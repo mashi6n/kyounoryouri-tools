@@ -14,6 +14,7 @@
 - Pythonパッケージマネージャ（pip, uv など）
 
 ## インストール
+### Python環境にインストール
 pip
 ```bash
 pip install git+https://github.com/mashi6n/kyounoryouri-tools.git
@@ -22,8 +23,21 @@ kyounoryouri-tools --help
 
 uv
 ```bash
-uv add git+https://git@github.com/mashi6n/kyounoryouri-tools.git
+uv add git+https://github.com/mashi6n/kyounoryouri-tools.git
 uv run kyounoryouri-tools --help
+```
+
+### コマンドラインツールとしてインストール
+pipx
+```bash
+pipx install git+https://github.com/mashi6n/kyounoryouri-tools.git
+kyounoryouri-tools --help
+```
+
+uvx
+```bash
+uv tool install git+https://github.com/mashi6n/kyounoryouri-tools.git
+uvx kyounoryouri-tools --help
 ```
 
 ## 使い方
