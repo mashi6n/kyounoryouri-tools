@@ -7,119 +7,6 @@ from pydantic import BaseModel
 from .recipe import Recipe
 
 
-class Ingredient(BaseModel):
-    """
-    An ingredient containing possible sub-ingredients.
-
-    Fields:
-        name (str): Name of the ingredient in Japanese.
-        quantity (str): Quantity of the ingredient in Japanese.
-        note (str): Note for the ingredient in Japanese.
-        sub_ingr (list[Ingredient]): Sub ingredients which consist of the ingredient.
-    """
-
-    name: str
-    quantity: str
-    note: str
-    sub_ingr: list[Ingredient]
-
-    def get_list_str(self, prefix: str) -> list[str]:
-        """Extract a flattened list of ingredient strings including sub-ingredients."""
-        ingredient_list = []
-        name = f"{prefix.strip()} {self.name}" if prefix != "" else self.name
-        qty = f", 分量: {self.quantity}" if self.quantity != "" else ""
-        note = f", 備考: {self.note}" if self.note != "" else ""
-        if self.name.find("【") == -1:
-            ingredient_list.append(name + qty + note)
-
-        for sub_ingr in self.sub_ingr:
-            ingredient_list.extend(sub_ingr.get_list_str(prefix=name))
-        return ingredient_list
-
-
-class Nutrient(BaseModel):
-    """
-    Nutrient information.
-
-    Fields:
-        name (str): name of the nutrient in Japanese.
-        quantity (str): quantity of the nutrient in Japanese.
-        servings (str): information of servings in Japanese.
-    """
-
-    name: str
-    quantity: str
-    servings: str
-
-
-class Step(BaseModel):
-    """
-    A single step in a recipe instruction or preparation.
-
-    Fields:
-        step_num (int): step number. Starts from 1 in each recipe.
-        desc (str): description of the step.
-        point (str): tip, hint, or note for the step. May be empty.
-    """
-
-    step_num: int
-    desc: str
-    point: str
-
-    def __str__(self) -> str:
-        if self.point == "":
-            return f"{self.step_num}: {self.desc}"
-        return f"{self.step_num}: {self.desc}  [[!{self.point}]]"
-
-
-class TitledStep(BaseModel):
-    """
-    A section containing title and multiple instruction steps.
-
-    Fields:
-        title (str): Title of the section. May be empty
-        steps (list[Step]): Steps in the section.
-    """
-
-    title: str
-    steps: list[Step]
-
-    def __str__(self) -> str:
-        s = self.title + "\n"
-        for step in self.steps:
-            s += f"  {step}\n"
-        return s
-
-    def get_list_str_wo_title(
-        self, remove_stepref_marker: bool, assign_step_number: bool
-    ) -> list[str]:
-        """
-        Get a list of step descriptions without the title.
-
-        Args:
-            remove_stepref_marker (bool): Whether to remove the step reference marker. \
-                E.g. "Put __2__ on the plate." -> "Put 2 on the plate."
-            assign_step_number (bool): Whether to assign step numbers to the descriptions.
-
-        Returns:
-            list[str]: A list of step descriptions.
-
-        """
-        step_list = []
-        for step in self.steps:
-            if assign_step_number:
-                if remove_stepref_marker:
-                    step_list.append(f"{step.step_num}. {step.desc.replace('__', '')}".strip())
-                else:
-                    step_list.append(f"{step.step_num}. {step.desc}".strip())
-            else:
-                if remove_stepref_marker:
-                    step_list.append(step.desc.replace("__", "").strip())
-                else:
-                    step_list.append(step.desc.strip())
-        return step_list
-
-
 class RawRecipe(BaseModel):
     """
     A recipe data extracted from a html file.
@@ -202,3 +89,116 @@ class RawRecipe(BaseModel):
             ingredients=ingredient_list_str,
             instructions=instruction_list_str,
         )
+
+
+class Ingredient(BaseModel):
+    """
+    An ingredient containing possible sub-ingredients.
+
+    Fields:
+        name (str): Name of the ingredient in Japanese.
+        quantity (str): Quantity of the ingredient in Japanese.
+        note (str): Note for the ingredient in Japanese.
+        sub_ingr (list[Ingredient]): Sub ingredients which consist of the ingredient.
+    """
+
+    name: str
+    quantity: str
+    note: str
+    sub_ingr: list[Ingredient]
+
+    def get_list_str(self, prefix: str) -> list[str]:
+        """Extract a flattened list of ingredient strings including sub-ingredients."""
+        ingredient_list = []
+        name = f"{prefix.strip()} {self.name}" if prefix != "" else self.name
+        qty = f", 分量: {self.quantity}" if self.quantity != "" else ""
+        note = f", 備考: {self.note}" if self.note != "" else ""
+        if self.name.find("【") == -1:
+            ingredient_list.append(name + qty + note)
+
+        for sub_ingr in self.sub_ingr:
+            ingredient_list.extend(sub_ingr.get_list_str(prefix=name))
+        return ingredient_list
+
+
+class Nutrient(BaseModel):
+    """
+    Nutrient information.
+
+    Fields:
+        name (str): name of the nutrient in Japanese.
+        quantity (str): quantity of the nutrient in Japanese.
+        servings (str): information of servings in Japanese.
+    """
+
+    name: str
+    quantity: str
+    servings: str
+
+
+class TitledStep(BaseModel):
+    """
+    A section containing title and multiple instruction steps.
+
+    Fields:
+        title (str): Title of the section. May be empty
+        steps (list[Step]): Steps in the section.
+    """
+
+    title: str
+    steps: list[Step]
+
+    def __str__(self) -> str:
+        s = self.title + "\n"
+        for step in self.steps:
+            s += f"  {step}\n"
+        return s
+
+    def get_list_str_wo_title(
+        self, remove_stepref_marker: bool, assign_step_number: bool
+    ) -> list[str]:
+        """
+        Get a list of step descriptions without the title.
+
+        Args:
+            remove_stepref_marker (bool): Whether to remove the step reference marker. \
+                E.g. "Put __2__ on the plate." -> "Put 2 on the plate."
+            assign_step_number (bool): Whether to assign step numbers to the descriptions.
+
+        Returns:
+            list[str]: A list of step descriptions.
+
+        """
+        step_list = []
+        for step in self.steps:
+            if assign_step_number:
+                if remove_stepref_marker:
+                    step_list.append(f"{step.step_num}. {step.desc.replace('__', '')}".strip())
+                else:
+                    step_list.append(f"{step.step_num}. {step.desc}".strip())
+            else:
+                if remove_stepref_marker:
+                    step_list.append(step.desc.replace("__", "").strip())
+                else:
+                    step_list.append(step.desc.strip())
+        return step_list
+
+
+class Step(BaseModel):
+    """
+    A single step in a recipe instruction or preparation.
+
+    Fields:
+        step_num (int): step number. Starts from 1 in each recipe.
+        desc (str): description of the step.
+        point (str): tip, hint, or note for the step. May be empty.
+    """
+
+    step_num: int
+    desc: str
+    point: str
+
+    def __str__(self) -> str:
+        if self.point == "":
+            return f"{self.step_num}: {self.desc}"
+        return f"{self.step_num}: {self.desc}  [[!{self.point}]]"
