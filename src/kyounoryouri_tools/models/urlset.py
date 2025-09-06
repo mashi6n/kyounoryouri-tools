@@ -4,7 +4,7 @@ from pydantic import BaseModel
 
 
 class Url(BaseModel):
-    """Url class corresponds to the `url` tag in sitemap.xml"""
+    """Url class corresponds to the `url` tag in recipe.xml"""
 
     loc: str
     lastmod: datetime.date
@@ -13,6 +13,6 @@ class Url(BaseModel):
 
 
 class Urlset(BaseModel):
-    """Urlset class corresponds to the `urlset` tag in sitemap.xml"""
+    """Urlset class corresponds to the `urlset` tag in recipe.xml"""
 
     url: list[Url]

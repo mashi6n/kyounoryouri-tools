@@ -10,12 +10,19 @@ from kyounoryouri_tools.downloaders import clean_outdated_files, dl_html, dl_ima
 from kyounoryouri_tools.extractors import html_to_json
 
 app = Typer(
-    help=("Fetch and create dataset in Hugging Face Dataset format"),
+    help=(
+        "KyounoRyouri Tools: A tool to download and manage recipes from "
+        + "NHK Minnnano KyounoRyouri site."
+    ),
     no_args_is_help=True,
 )
 
 
-@app.command(name="init", help="initialize directory structure and download sitemap file")
+@app.command(
+    name="init",
+    help="Initialize directory structure and download sitemap file "
+    + "making it ready for download.",
+)
 def init(
     data_root: Annotated[Path, Option(help="path to root data directory")] = Path("./data"),
     sitemap_url: Annotated[
@@ -35,7 +42,12 @@ def init(
     rich.print(t)
 
 
-@app.command(name="download", help="download recipe data from the website")
+@app.command(
+    name="download",
+    help="Download recipe data from the website. "
+    + "This command will download html, images, and convert html to json. "
+    + "Automatically resumes from the last state.",
+)
 def download(
     data_root: Annotated[Path, Option(help="path to root data directory")] = Path("./data"),
 ) -> None:
@@ -61,7 +73,12 @@ def download(
     rich.print(t)
 
 
-@app.command(name="update", help="update sitemap and remove outdated files")
+@app.command(
+    name="update",
+    help="Update sitemap and remove outdated files. "
+    + "This command will download the latest sitemap, compare with the existing one, "
+    + "and remove files that are outdated in the latest sitemap.",
+)
 def update(
     data_root: Annotated[Path, Option(help="path to root data directory")] = Path("./data"),
     sitemap_url: Annotated[

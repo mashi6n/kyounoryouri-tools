@@ -15,7 +15,7 @@ from kyounoryouri_tools.models import RawRecipe
 
 def extract_recipe(html_path: Path) -> RawRecipe:
     """
-    Extract recipe from the page
+    Extract recipe from a html file.
 
     Args:
         html_path (Path): path to the html file

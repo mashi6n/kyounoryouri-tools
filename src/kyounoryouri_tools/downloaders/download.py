@@ -15,12 +15,13 @@ from .utils import get_urlset
 
 def download(url: str | list[str], dir_path: Path, overwrite: bool = False) -> int:
     """
-    Download file from `url` to `dir_path`. If file already exists, skip downloading.
+    Download file from `url` to `dir_path`.
 
     Args:
         url (str | list[str]): URL or list of URL to download
         dir_path (Path): directory path to save the file
-        overwrite (bool, optional): If True, overwrite the file. Defaults to False.
+        overwrite (bool, optional): If True, overwrite the file.\
+            Otherwise, skip if the file exists. Defaults to False.
 
     Returns:
         int: The number of downloaded files.

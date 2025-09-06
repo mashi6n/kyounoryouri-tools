@@ -14,6 +14,17 @@ from .utils import get_urlset
 
 
 def get_related_files(config: PathConfig, html_path: Path) -> list[Path]:
+    """
+    Get all files extracted or downloaded from the information in the html file.
+
+    Args:
+        config (PathConfig): Configuration object.
+        html_path (Path): Path to the html file.
+
+    Returns:
+        list[Path]: List of related files (recipe json, raw recipe json, jpg) that exist.
+
+    """
     related_files: list[Path] = []
 
     if not html_path.exists():
@@ -48,8 +59,8 @@ def clean_outdated_files(config: PathConfig, sitemap_url: str, dry_run: bool = T
     Args:
         config (PathConfig): Configuration object.
         sitemap_url (str): URL of the sitemap.
-        dry_run (bool): If True, perform a dry run without making changes
-                        and return the number of outdated files.
+        dry_run (bool): If True, perform a dry run without making changes\
+            and return the number of outdated files.
 
     Returns:
         int: The number of outdated files. -1 if failed to get the latest sitemap.
