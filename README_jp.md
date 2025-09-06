@@ -90,16 +90,16 @@ DATASET_ROOT/
 │   └── recipe.xml    # サイトマップファイル
 │
 ├── html/             # HTMLファイル
-│   └── XXX.html      # URLの末尾に対応するファイル名
+│   └── XXX.html
 │
 ├── img/              # レシピの完成画像
-│   └── YYY.jpg       # HTMLファイルに記載された画像URLの末尾に対応するファイル名 
+│   └── YYY.jpg
 │
 ├── raw_recipe_json/  # HTMLファイルから抽出された構造化データを保ったJSONファイル
-│   └── XXX.json      # ファイル名は対応するHTMLファイル名と同じ
+│   └── XXX.json
 │
 └── recipe_json/      # HTMLファイルから抽出された一般的なレシピデータを保ったJSONファイル
-    └── XXX.json      # ファイル名は対応するHTMLファイル名と同じ
+    └── XXX.json
 ```
 
 ## データ構造
