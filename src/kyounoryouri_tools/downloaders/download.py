@@ -84,7 +84,7 @@ def dl_html(config: PathConfig) -> int:
         rich.print("[bold yellow]:warning: Failed to get urlset from sitemap.xml :warning:")
         return 0
 
-    url_list = [url.loc for url in urlset.url][:10]
+    url_list = [url.loc for url in urlset.url]
 
     downloaded = download(url_list, config.html_dir)
     rich.print(f"{downloaded} HTML files have been downloaded to [cyan]{config.html_dir}[/].\n")
