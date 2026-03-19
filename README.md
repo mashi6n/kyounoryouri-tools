@@ -158,15 +158,18 @@ Please open issues or pull requests on GitHub.
 ## Citation
 If you find KyounoRyouri Tools useful in your research, we would appreciate it if you could cite the following paper:
 
-(To be updated upon publication)
 ```bibtex
-@misc{toyooka2025highlycleanrecipedataset,
-      title={A Highly Clean Recipe Dataset with Ingredient States Annotation for State Probing Task}, 
-      author={Mashiro Toyooka and Kiyoharu Aizawa and Yoko Yamakata},
-      year={2025},
-      eprint={2507.17232},
-      archivePrefix={arXiv},
-      primaryClass={cs.MM},
-      url={https://arxiv.org/abs/2507.17232}, 
+@inproceedings{toyooka2025AHighlyClean
+    author = {Toyooka, Mashiro and Aizawa, Kiyoharu and Yamakata, Yoko},
+    title = {A Highly Clean Recipe Dataset with Ingredient States Annotation for State Probing Task},
+    year = {2025},
+    isbn = {9798400720352},
+    publisher = {Association for Computing Machinery},
+    url = {https://doi.org/10.1145/3746027.3755771},
+    doi = {10.1145/3746027.3755771},
+    booktitle = {Proceedings of the 33rd ACM International Conference on Multimedia},
+    pages = {748–756},
+    numpages = {9},
+    series = {MM '25}
 }
 ```
